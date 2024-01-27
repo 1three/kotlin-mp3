@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "fastcampus.part1.mp3"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "fastcampus.part1.mp3"
         minSdk = 28
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -32,6 +32,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    viewBinding {
+        enable = true
     }
 }
 
