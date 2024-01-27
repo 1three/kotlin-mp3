@@ -1,5 +1,6 @@
 package fastcampus.part1.mp3
 
+import android.content.Intent
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,9 +21,19 @@ import fastcampus.part1.mp3.databinding.ActivityMainBinding
  * BroadCastReceiver - LOW_BATTERY
  * */
 
+/**
+ * Service
+ *
+ * 1. 백그라운드에서 실행되는 컴포넌트 (no UI)
+ * 2. 상호작용 없는 동안, 계속 실행되어야 하는 작업 처리
+ * 3. 종류
+ *    사용자에 보이는 포그라운드
+ *    사용자가 알지 못하는 백그라운드
+ *    다른 앱 구성요소와 상호작용하는 바인드
+ * */
+
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,21 +54,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun mediaPlay() {
-        if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(this, R.raw.status).apply {
-                isLooping = true // 반복 재생 사용
-            }
+        // Service
+        val intent = Intent(this, MediaPlayerService::class.java).apply {
+            action = MEDIA_PLAYER_PLAY
         }
-        mediaPlayer?.start()
+        startService(intent) // Service 시작
     }
 
     private fun mediaStop() {
-        mediaPlayer?.stop()
-        mediaPlayer?.release() // memory 해제
-        mediaPlayer = null
+        val intent = Intent(this, MediaPlayerService::class.java).apply {
+            action = MEDIA_PLAYER_STOP
+        }
+        startService(intent) // Service 정지 (새로운 Service 시작 X)
     }
 
     private fun mediaPause() {
-        mediaPlayer?.pause()
+        val intent = Intent(this, MediaPlayerService::class.java).apply {
+            action = MEDIA_PLAYER_PAUSE
+        }
+        startService(intent) // Service 일시 정지 (새로운 Service 시작 X)
     }
 }
