@@ -40,17 +40,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.playButton.setOnClickListener {
-            mediaPlay()
-        }
-
-        binding.stopButton.setOnClickListener {
-            mediaStop()
-        }
-
-        binding.pauseButton.setOnClickListener {
-            mediaPause()
-        }
+        binding.playButton.setOnClickListener { mediaPlay() }
+        binding.stopButton.setOnClickListener { mediaStop() }
+        binding.pauseButton.setOnClickListener { mediaPause() }
     }
 
     private fun mediaPlay() {
@@ -58,20 +50,21 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, MediaPlayerService::class.java).apply {
             action = MEDIA_PLAYER_PLAY
         }
-        startService(intent) // Service 시작
+
+        startForegroundService(intent) // Service 시작
     }
 
     private fun mediaStop() {
         val intent = Intent(this, MediaPlayerService::class.java).apply {
             action = MEDIA_PLAYER_STOP
         }
-        startService(intent) // Service 정지 (새로운 Service 시작 X)
+        startForegroundService(intent) // Service 정지 (새로운 Service 시작 X)
     }
 
     private fun mediaPause() {
         val intent = Intent(this, MediaPlayerService::class.java).apply {
             action = MEDIA_PLAYER_PAUSE
         }
-        startService(intent) // Service 일시 정지 (새로운 Service 시작 X)
+        startForegroundService(intent) // Service 일시 정지 (새로운 Service 시작 X)
     }
 }
